@@ -10,15 +10,21 @@ import os
 import sys
 import argparse
 from google.cloud import texttospeech
-
 from datetime import date
-# wavenet f
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Need to set up the environment: 
+#   https://cloud.google.com/text-to-speech/docs/libraries#client-libraries-install-python
+# And Application Credentials: 
+#   gcloud auth application-default login
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 
 # Code taken from Googles example
 # args (script, voice)
 # splice the language code out of voice
-def synthesis(script_text):
-    #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"Z:\Projects\TTS\text-to-speech-program-365214-2f88b9c3a441.json"
+def synthesis(filename, script_text):
+    
 
     # Instantiates a client
     #client = texttospeech.TextToSpeechClient(project="cx-tts-376414 ")
@@ -47,7 +53,7 @@ def synthesis(script_text):
         input=synthesis_input, voice=voice, audio_config=audio_config
     )
 
-    filename = os.path.join("Recordings", datetime.datetime.now().strftime("%Y-%m-%d-%H.%M.mp3"))
+    
     # The response's audio_content is binary.
     with open(filename, "wb") as out:
         # Write the response to the output file.
@@ -101,13 +107,12 @@ def main():
             print("Cannot use text and file")
             exit(1)
             
-        print("TODO HERE")
         # if the argument is not a file treat all arguments as text to synthesize
         for i in args.text:
             script_text += i + ' '
             
-    print("synth")
-    synthesis(script_text)
+    filename = os.path.join("Recordings", datetime.datetime.now().strftime("%Y-%m-%d-%H.%M.mp3"))
+    synthesis(filename, script_text)
 
 
 if __name__ == "__main__":
